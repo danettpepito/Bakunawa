@@ -1,0 +1,1004 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bakunawa at the window · Story screen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@400;500&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&display=swap" rel="stylesheet">
+<script>
+/* Adobe Fonts: the same Web Project ID as on the question screen (Ivy Presto Display). */
+const ADOBE_FONTS_KIT='';
+if(ADOBE_FONTS_KIT){const l=document.createElement('link');l.rel='stylesheet';l.href='https://use.typekit.net/'+ADOBE_FONTS_KIT+'.css';document.head.appendChild(l);}
+</script>
+<style>
+:root{
+  --page:#E4DCCB; --card:#EDE6D7; --text:#221B12; --muted:#6B5F4D; --line:#BFB29A;
+  --btn:#F2ECDF; --on:#1F6E67; --on-text:#F6F1E6; --gong:#A86B12; --gong-text:#FFF7E6;
+  --serif:"Fraunces",Georgia,serif; --sans:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --sub:"ivypresto-display","Cormorant Garamond","Iowan Old Style",Georgia,serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --page:#141821; --card:#1A1F2A; --text:#E8DFCC; --muted:#9A9182; --line:#3A3F4B;
+    --btn:#1D222D; --on:#3E9C92; --on-text:#0F141C; --gong:#D9A441; --gong-text:#1A1206; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --page:#141821; --card:#1A1F2A; --text:#E8DFCC; --muted:#9A9182; --line:#3A3F4B;
+  --btn:#1D222D; --on:#3E9C92; --on-text:#0F141C; --gong:#D9A441; --gong-text:#1A1206; color-scheme:dark;
+}
+html{height:100%}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100%;background:var(--page);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.45}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit}
+button:focus-visible{outline:2px solid var(--on);outline-offset:2px}
+
+#landing{max-width:640px;margin:0 auto;padding:48px 16px}
+#landing h1{font-family:var(--serif);font-weight:500;font-size:clamp(30px,5vw,44px);line-height:1.08;margin:0 0 24px;letter-spacing:-0.01em}
+.roles{display:grid;gap:10px}
+.role{display:block;width:100%;text-align:left;background:var(--btn);border:1px solid var(--line);border-radius:3px;padding:16px 18px;cursor:pointer}
+.role strong{display:block;font-family:var(--serif);font-weight:500;font-size:22px}
+.role:hover{border-color:var(--on)}
+
+#wrap{max-width:1440px;margin:0 auto;padding:20px 16px 40px}
+body.role-p #wrap{display:grid;grid-template-columns:minmax(300px,420px) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:860px){body.role-p #wrap{grid-template-columns:1fr}}
+body.role-s #wrap{padding:0;max-width:none}
+
+/* question screen: Bakunawa Questions design */
+body.role-q #wrap{padding:0;max-width:none}
+#qwrap{position:relative;background:var(--qbg,#232323);color:var(--qtext,#ECE9E3);font-family:"Space Grotesk",system-ui,sans-serif;transition:background-color 1.6s ease,color 1.6s ease;overflow:hidden;--qmuted:#A19D95;--qline:rgba(236,233,227,.5)}
+body.role-q{transition:background-color 1.6s ease}
+body.role-q #qwrap{min-height:100vh;min-height:100dvh}
+body.role-p #qwrap{border-radius:3px}
+.qsky{position:absolute;inset:0;pointer-events:none}
+.qsky i{position:absolute;inset:0;opacity:0;transition:opacity 1.6s ease}
+.g-night{background:radial-gradient(circle at 18% 10%,rgba(150,100,230,.30),transparent 45%)}
+.g-dusk{background:radial-gradient(ellipse at 50% 112%,rgba(250,120,60,.5),rgba(214,40,110,.26) 42%,transparent 72%)}
+.g-day{background:radial-gradient(circle at 90% 4%,rgba(253,206,64,.6),rgba(250,146,52,.2) 26%,transparent 46%)}
+.g-warm{background:linear-gradient(180deg,transparent 50%,rgba(240,80,66,.24))}
+.g-cool{background:linear-gradient(180deg,transparent 50%,rgba(52,206,186,.2))}
+.specks{background-image:radial-gradient(circle,rgba(255,255,255,.6) 1px,transparent 1.7px);background-size:var(--sp,40px) var(--sp,40px)}
+[data-tod="night"] .g-night,[data-tod="dusk"] .g-dusk,[data-tod="day"] .g-day,[data-warm="warm"] .g-warm,[data-warm="cool"] .g-cool{opacity:1}
+[data-dens="1"] .specks{opacity:.2;--sp:40px}
+[data-dens="2"] .specks{opacity:.4;--sp:22px}
+#qview{position:relative;max-width:1000px;margin:0 auto;padding:96px 48px 72px;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+.q-top{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:72px}
+.q-segs{display:flex;gap:8px}
+.q-segs i{display:block;width:56px;height:3px;transition:background-color .6s ease,opacity .6s ease}
+.q-counter{font-size:15px;letter-spacing:.04em;color:var(--qmuted);font-variant-numeric:tabular-nums}
+.q-eyebrow{margin:0 0 18px;font-size:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--qmuted)}
+.q-head{font-family:"Fraunces",Georgia,serif;font-weight:400;font-size:clamp(36px,5vw,60px);line-height:1.08;letter-spacing:-0.02em;margin:0 0 56px;text-wrap:pretty;opacity:0;transform:var(--htf,translateY(10px));transition:opacity .6s ease,transform .6s ease}
+.entered .q-head{opacity:1;transform:none}
+.q-opts{display:flex;flex-direction:column;gap:20px}
+.q-opt{position:relative;overflow:hidden;display:flex;align-items:center;gap:32px;width:100%;min-height:116px;padding:0 44px;text-align:left;background:transparent;color:var(--qtext);border:1px solid var(--qline);border-radius:0;font-family:"Space Grotesk",system-ui,sans-serif;font-size:clamp(20px,2.4vw,27px);cursor:pointer;opacity:0;transform:var(--tf);transition:opacity var(--d) var(--e) var(--dl),transform var(--d) var(--e) var(--dl),border-color .25s,background-color .25s,color .25s}
+.entered .q-opt{opacity:1;transform:none}
+.q-opt .fill{position:absolute;inset:0;background:var(--sw);opacity:.16;transform-origin:left center;transform:scaleX(0);transition:transform .5s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.q-opt .num{position:relative;font-size:15px;letter-spacing:.08em;color:var(--qmuted);font-variant-numeric:tabular-nums;transition:color .3s}
+.q-opt .lbl{position:relative;flex:1}
+.q-opt .dia{position:relative;width:14px;height:14px;background:var(--sw);transform:rotate(45deg) scale(0);transition:transform .4s cubic-bezier(.3,1.6,.5,1);flex:none}
+.q-opts:not(.picking) .q-opt:hover{border-color:var(--sw)}
+.q-opts:not(.picking) .q-opt:hover .fill{transform:scaleX(1)}
+.q-opts:not(.picking) .q-opt:hover .num{color:var(--qtext)}
+.q-opts:not(.picking) .q-opt:hover .dia{transform:rotate(45deg) scale(1)}
+.q-opt[aria-pressed="true"]{background:var(--sw);border-color:var(--sw);color:var(--pt)}
+.q-opt[aria-pressed="true"] .fill{transform:scaleX(0)}
+.q-opt[aria-pressed="true"] .num{color:var(--pt)}
+.q-opt[aria-pressed="true"] .dia{transform:rotate(45deg) scale(1.3)}
+.q-opts.picking .q-opt{transition-delay:0s}
+.entered .q-opts.picking .q-opt:not([aria-pressed="true"]){opacity:.35}
+.q-opt:focus-visible,.q-cta:focus-visible,.q-link:focus-visible{outline:2px solid currentColor;outline-offset:4px}
+.q-cta{width:100%;min-height:116px;padding:0 44px;display:flex;align-items:center;justify-content:space-between;gap:24px;background:var(--ac);color:var(--act);border:1px solid var(--ac);border-radius:0;font-family:"Space Grotesk",system-ui,sans-serif;font-size:27px;font-weight:500;cursor:pointer;margin:0 0 48px;transition:background-color .6s ease,transform .2s;animation:pulse 1.7s ease-in-out infinite}
+.q-cta:active{transform:scale(.99)}
+.q-cta .dia{width:14px;height:14px;background:var(--act);transform:rotate(45deg);flex:none}
+@keyframes pulse{50%{opacity:.84}}
+.q-rows{border-top:1px solid var(--qline)}
+.q-row{display:grid;grid-template-columns:1fr auto;gap:6px 16px;align-items:center;padding:20px 0;border-bottom:1px solid var(--qline)}
+.q-row .k{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--qmuted)}
+.q-row .v{font-size:clamp(18px,2vw,22px);min-width:0}
+.q-row .q-link{grid-column:2;grid-row:1/3}
+.q-foot{margin-top:auto;padding-top:64px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.q-foot .left{display:flex;gap:24px}
+.q-link{background:none;border:0;padding:8px 0;color:var(--qmuted);font-family:"Space Grotesk",system-ui,sans-serif;font-size:16px;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.q-link:hover{color:var(--qtext)}
+/* preview: question screen is the same 16:9 size as the story screen */
+body.role-p #wrap{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
+body.role-p #qwrap{aspect-ratio:16/9;max-width:100%;overflow-x:hidden;overflow-y:auto;container-type:size}
+body.role-p #qview{max-width:none;min-height:100%;padding:6cqh 5cqw 4cqh}
+body.role-p .q-top{margin-bottom:5cqh}
+body.role-p .q-segs i{width:7cqw}
+body.role-p .q-counter{font-size:max(10px,3cqh)}
+body.role-p .q-eyebrow{font-size:max(10px,2.8cqh);margin-bottom:1.6cqh}
+body.role-p .q-head{font-size:max(15px,7cqh);margin-bottom:4cqh}
+body.role-p .q-opts{gap:1.8cqh}
+body.role-p .q-opt{min-height:max(30px,10.5cqh);padding:0 3.2cqw;gap:2.4cqw;font-size:max(12px,4cqh)}
+body.role-p .q-opt .num{font-size:max(10px,2.8cqh)}
+body.role-p .q-cta{min-height:max(34px,11cqh);padding:0 3.2cqw;font-size:max(13px,4.4cqh);margin-bottom:3cqh}
+body.role-p .q-row{padding:1.1cqh 0}
+body.role-p .q-row .k{font-size:max(9px,2.5cqh)}
+body.role-p .q-row .v{font-size:max(12px,3.6cqh)}
+body.role-p .q-link{font-size:max(11px,3cqh);padding:0}
+body.role-p .q-foot{padding-top:3cqh}
+@media (max-width:860px){body.role-p #wrap{grid-template-columns:1fr}}
+@media (max-width:640px){
+  #qview{padding:44px 20px 32px}
+  .q-top{margin-bottom:40px}
+  .q-segs i{width:40px}
+  .q-head{margin-bottom:32px}
+  .q-opts{gap:12px}
+  .q-opt{min-height:76px;padding:0 22px;gap:18px}
+  .q-cta{min-height:84px;padding:0 22px;font-size:22px}
+}
+@media (prefers-reduced-motion: reduce){.q-head,.q-opt{opacity:1!important;transform:none!important;transition:none!important}.q-cta{animation:none}#qwrap,.qsky i{transition:none}}
+
+/* story stage */
+.stage{container-type:size;position:relative;width:100%;max-width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:3px;background:#14122e}
+body.role-s #sview{position:fixed;inset:0}
+body.role-s .stage{height:100%;aspect-ratio:auto;border-radius:0}
+.stage:fullscreen{width:100vw;height:100vh;aspect-ratio:auto;border-radius:0}
+.stage svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.stage svg.ghost{pointer-events:none;transition:opacity 1.4s ease}
+.subtitle{position:absolute;left:50%;bottom:4cqh;transform:translateX(-50%);width:min(64%,980px);text-align:center;margin:0;font-family:var(--sub);font-weight:500;font-size:max(14px,3.6cqh);line-height:1.28;color:#f3eadb;text-shadow:0 2px 14px rgba(8,6,26,.85),0 0 2px rgba(8,6,26,.9);text-wrap:balance;transition:opacity .7s ease,transform .7s ease;pointer-events:none;z-index:2}
+.subtitle.out{opacity:0;transform:translate(-50%,8px)}
+.sctrl{position:absolute;right:2cqh;top:2cqh;display:flex;gap:6px;transition:opacity .4s;z-index:3}
+.sctrl button{background:rgba(0,0,0,.35);color:#F3EAD6;border:1px solid rgba(255,255,255,.25);border-radius:3px;padding:6px 10px;font-size:13px;cursor:pointer}
+.sctrl.hide{opacity:0;pointer-events:none}
+/* siri-style edge glow: wraps the whole screen, swirls, then drains upward and beams off the top */
+@property --sa{syntax:'<angle>';inherits:true;initial-value:0deg}
+@property --sw{syntax:'<length>';inherits:true;initial-value:0px}
+@property --cut{syntax:'<percentage>';inherits:false;initial-value:-25%}
+@property --rise{syntax:'<percentage>';inherits:false;initial-value:125%}
+.siri{position:absolute;inset:0;pointer-events:none;z-index:8;opacity:0;--sw:0px;--on:18px;--cut:-25%;--rise:125%;-webkit-mask:linear-gradient(to top,transparent var(--cut),#000 calc(var(--cut) + 22%),#000 var(--rise),transparent calc(var(--rise) + 22%));mask:linear-gradient(to top,transparent var(--cut),#000 calc(var(--cut) + 22%),#000 var(--rise),transparent calc(var(--rise) + 22%));transition:opacity .5s ease,--sw .8s cubic-bezier(.2,.9,.3,1);animation:siriSpin 3.6s linear infinite}
+body.role-q .siri,body.role-q .siri-fx{position:fixed}
+.stage .siri{--on:26px}
+.siri .rw{position:absolute;inset:0}
+.siri .b1{filter:blur(0)}
+.siri .b2{filter:blur(12px)}
+.siri .b3{filter:blur(42px);opacity:.85}
+.siri .ring{position:absolute;inset:0;padding:var(--sw);background:conic-gradient(from var(--sa),#F48CAA,#F07828,#F8BE28,#2AB6C8,#2F6FD0,#7846B4,#D6286E,#F48CAA);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.siri .b1 .ring{padding:calc(var(--sw)*.18)}
+.siri .b3 .ring{padding:calc(var(--sw)*2.4)}
+.siri.in{opacity:1;--sw:var(--on)}
+.siri.arrive{opacity:1;--sw:var(--on);transition:none;animation:siriSpin 3.6s linear infinite,siriArrive .8s cubic-bezier(.2,.8,.2,1) forwards}
+.siri.shoot{animation:siriSpin 3.6s linear infinite,siriShoot .85s cubic-bezier(.6,0,.35,1) forwards}
+@keyframes siriSpin{to{--sa:360deg}}
+@keyframes siriArrive{0%{--rise:-25%;--sw:calc(var(--on)*1.8)}100%{--rise:125%;--sw:var(--on)}}
+@keyframes siriShoot{0%{--cut:-25%;--sw:var(--on)}30%{--sw:calc(var(--on)*1.6)}100%{--cut:105%;--sw:calc(var(--on)*.4)}}
+.siri.arrive-top{opacity:1;--sw:var(--on);transition:none;animation:siriSpin 3.6s linear infinite,siriArriveTop .8s cubic-bezier(.2,.8,.2,1) forwards}
+.siri.shoot-down{animation:siriSpin 3.6s linear infinite,siriShootDown .85s cubic-bezier(.6,0,.35,1) forwards}
+@keyframes siriArriveTop{0%{--cut:105%;--sw:calc(var(--on)*1.8)}100%{--cut:-25%;--sw:var(--on)}}
+@keyframes siriShootDown{0%{--rise:125%;--sw:var(--on)}30%{--sw:calc(var(--on)*1.6)}100%{--rise:-25%;--sw:calc(var(--on)*.4)}}
+.siri-fx.down .beam{top:0;bottom:auto;transform:translate(-50%,-100%);background:radial-gradient(ellipse at 50% 0,rgba(255,244,226,.95),rgba(248,190,40,.35) 40%,transparent 70%)}
+.siri-fx.down .flare{top:auto;bottom:0;transform:translate(-50%,40%);background:radial-gradient(ellipse at 50% 100%,rgba(255,250,240,.95),rgba(244,140,170,.4) 40%,transparent 72%)}
+.siri-fx.down.go .beam{animation-name:siriBeamDown}
+.siri-fx.down.go .flare{animation-name:siriFlareDown}
+@keyframes siriBeamDown{0%{opacity:0;transform:translate(-50%,-100%) scaleX(1.4)}25%{opacity:1}100%{opacity:0;transform:translate(-50%,160%) scaleX(.5)}}
+@keyframes siriFlareDown{0%{opacity:0}25%{opacity:1}100%{opacity:0;transform:translate(-50%,90%)}}
+.siri-fx{position:absolute;inset:0;pointer-events:none;z-index:9;overflow:hidden}
+.siri-fx i{position:absolute;left:50%;opacity:0}
+.siri-fx .beam{bottom:0;width:34%;height:70%;transform:translate(-50%,100%);background:radial-gradient(ellipse at 50% 100%,rgba(255,244,226,.95),rgba(248,190,40,.35) 40%,transparent 70%);filter:blur(18px)}
+.siri-fx .flare{top:0;width:80%;height:30%;transform:translate(-50%,-40%);background:radial-gradient(ellipse at 50% 0,rgba(255,250,240,.95),rgba(244,140,170,.4) 40%,transparent 72%);filter:blur(10px)}
+.siri-fx.go .beam{animation:siriBeam .85s cubic-bezier(.5,0,.3,1) forwards}
+.siri-fx.go .flare{animation:siriFlare 1.1s ease-out .55s forwards}
+@keyframes siriBeam{0%{opacity:0;transform:translate(-50%,100%) scaleX(1.4)}25%{opacity:1}100%{opacity:0;transform:translate(-50%,-160%) scaleX(.5)}}
+@keyframes siriFlare{0%{opacity:0}25%{opacity:1}100%{opacity:0;transform:translate(-50%,-90%)}}
+.stage svg,.stage canvas.hand{transition:transform .9s cubic-bezier(.2,.9,.3,1),filter .9s ease}
+.stage.siri-on svg,.stage.siri-on canvas.hand{transform:scale(.97);filter:brightness(.8)}
+/* hand-drawn clouds and moons sit between the scene and the paper textures */
+.stage canvas.hand{position:absolute;left:0;top:0;pointer-events:none}
+.stage svg#tex{pointer-events:none;mix-blend-mode:overlay}
+.stage .vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 75% 75% at 50% 45%,rgba(7,6,26,0) 55%,rgba(7,6,26,.5) 100%)}
+/* no frame on this screen: the scene runs to the edges (the frame and cloth live on the question screen) */
+.stage .win{position:absolute;inset:0;overflow:hidden;background:#14122e}
+/* the opening: a real night sky over everything, which dissolves into the drawing once the questions begin */
+.stage canvas.realsky{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0;transform:scale(1.06);filter:blur(3px);transition:opacity 3.4s ease,transform 4.5s cubic-bezier(.3,.6,.2,1),filter 3.4s ease}
+.stage.intro canvas.realsky{opacity:1;transform:scale(1);filter:none;transition:opacity 2s ease,transform 2s ease,filter 2s ease}
+/* quiet water under the words, so the text never sits on the busy sea */
+.stage .scrim{position:absolute;left:0;right:0;bottom:0;height:27%;pointer-events:none;background:linear-gradient(to bottom,rgba(var(--scrim,10,9,34),0),rgba(var(--scrim,10,9,34),.7) 55%,rgba(var(--scrim,10,9,34),.85))}
+@media (prefers-reduced-motion: reduce){.gong{animation:none}.subtitle,.sctrl,.stage svg.ghost{transition:none}}
+</style>
+</head>
+<body>
+
+
+
+<div id="wrap">
+  <div id="qcol" hidden><div id="qwrap"><div class="qsky" aria-hidden="true"><i class="g-night"></i><i class="g-dusk"></i><i class="g-day"></i><i class="g-warm"></i><i class="g-cool"></i><i class="specks"></i></div><section id="qview"></section></div></div>
+  <div id="scol" hidden style="min-width:0">
+    <section id="sview">
+      <div class="stage intro" id="stage">
+        <div class="win" id="win">
+          <svg id="scene" viewBox="0 -30 1028 700" preserveAspectRatio="xMidYMid slice" role="img" aria-label="The Bakunawa story drawn as a moon arc over a mountain and sea"></svg>
+          <div class="vig" aria-hidden="true"></div>
+          <div class="scrim" aria-hidden="true"></div>
+        </div>
+        <svg id="tex" viewBox="0 -30 1028 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+        <canvas class="realsky" aria-hidden="true"></canvas>
+        <p class="subtitle out" id="sub" aria-live="polite"></p>
+        <div class="sctrl" id="sctrl">
+          <button id="sound">Turn on sound</button>
+          <button id="fs">Full screen</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+<script src="art/art-data.js?v=5"></script>
+<script src="art/serpent-art.js?v=4"></script>
+<script src="art/curl-art.js?v=1"></script>
+<script src="js/handdrawn.js?v=46"></script>
+<script src="js/sky.js?v=10"></script>
+<script>
+(function(){
+/* ================= shared content ================= */
+const TEXT=[
+  "Once, seven moons lit the sky.",
+  "Bakunawa rose from the sea, drawn to their light.",
+  "One by one it swallowed them, until six of seven were gone.",
+  "So the people came out with pots and gongs, shouting and banging to frighten it.",
+  "Afraid of the noise, it let the moon go, the one that still lights our sky."
+];
+const{QS,sanitizeA}=BKW;
+
+
+/* ================= siri-style glow ================= */
+function makeSiri(host){
+  const s=document.createElement('div');s.className='siri';s.setAttribute('aria-hidden','true');
+  s.innerHTML='<div class="rw b3"><div class="ring"></div></div><div class="rw b2"><div class="ring"></div></div><div class="rw b1"><div class="ring"></div></div>';
+  const fx=document.createElement('div');fx.className='siri-fx';fx.setAttribute('aria-hidden','true');fx.innerHTML='<i class="beam"></i><i class="flare"></i>';
+  host.appendChild(s);host.appendChild(fx);
+  const wipe=(n,base)=>{n.style.transition='none';n.className=base;void n.offsetWidth;n.style.transition='';};
+  return{
+    /* from: 'below' rises in from the bottom edge, 'above' pours in from the top, nothing = fades in */
+    show(from){wipe(s,'siri');s.classList.add(from==='below'?'arrive':from==='above'?'arrive-top':'in');},
+    /* dir: 'up' drains upward and beams off the top, 'down' drains downward and beams off the bottom */
+    shoot(dir){const d=dir==='down';s.className='siri in '+(d?'shoot-down':'shoot');wipe(fx,'siri-fx'+(d?' down':''));fx.classList.add('go');},
+    fade(){s.className='siri';},
+    clear(){wipe(s,'siri');wipe(fx,'siri-fx');}
+  };
+}
+/* ================= link between screens ================= */
+const LOCAL={recv:{q:[],s:[]}};
+function makeBus(role,local){
+  const other=role==='q'?'s':'q';
+  const handlers=[],statusHandlers=[];
+  let lastJ='',mine=null,bcSeen=false,roomSeen=false;
+  const setStatus=()=>statusHandlers.forEach(h=>h(local||bcSeen||roomSeen));
+  const deliver=s=>{const j=JSON.stringify(s);if(j===lastJ)return;lastJ=j;handlers.forEach(h=>h(s));};
+  if(local){
+    LOCAL.recv[role].push(s=>deliver(s));
+    return{publish(s){mine=s;setTimeout(()=>LOCAL.recv[other].forEach(h=>h(s)),0);},on(h){handlers.push(h);},onStatus(h){statusHandlers.push(h);setTimeout(setStatus,0);}};
+  }
+  let bc=null;
+  try{
+    bc=new BroadcastChannel('bakunawa-window-arc');
+    bc.onmessage=e=>{
+      const d=e.data;if(!d||typeof d!=='object')return;
+      if(d.hello&&d.from===other){bcSeen=true;setStatus();if(mine)bc.postMessage({r:role,s:mine});}
+      if(d.r===other&&d.s&&typeof d.s==='object'){if(!bcSeen){bcSeen=true;setStatus();}deliver(d.s);}
+    };
+    bc.postMessage({hello:1,from:role});
+  }catch(e){bc=null;}
+  /* fallback link: storage events between windows of the same browser */
+  const KS='bkw-link-'+role,KO='bkw-link-'+other,HO='bkw-hello-'+other;
+  const lsPut=(k,v)=>{try{localStorage.setItem(k,v);}catch(e){}};
+  addEventListener('storage',e=>{
+    if(e.key===HO&&mine){bcSeen=true;setStatus();lsPut(KS,JSON.stringify({s:mine,t:Date.now()}));}
+    if(e.key===KO&&e.newValue){try{const d=JSON.parse(e.newValue);if(d&&d.s&&typeof d.s==='object'){if(!bcSeen){bcSeen=true;setStatus();}deliver(d.s);}}catch(err){}}
+  });
+  lsPut('bkw-hello-'+role,String(Date.now()));
+  let room=null;
+  (async()=>{
+    try{
+      if(!(window.claude&&window.claude.use))return;
+      room=await window.claude.use('room');
+      if(!room)return;
+      room.onPeers(ch=>{
+        let best=null;
+        for(const p of ch.peers){
+          if(p.sameTab)continue;
+          const pr=p.presence;
+          if(pr&&pr.r===other&&pr.s&&typeof pr.s==='object'){if(!best||p.updatedAt>best.updatedAt)best=p;}
+        }
+        const was=roomSeen;roomSeen=!!best;if(was!==roomSeen)setStatus();
+        if(best)deliver(best.presence.s);
+      },()=>{});
+      if(mine)room.presence({r:role,s:mine}).catch(()=>{});
+    }catch(e){}
+  })();
+  return{
+    publish(s){mine=s;try{bc&&bc.postMessage({r:role,s});}catch(e){}lsPut(KS,JSON.stringify({s,t:Date.now()}));if(room)room.presence({r:role,s}).catch(()=>{});},
+    on(h){handlers.push(h);},
+    onStatus(h){statusHandlers.push(h);setTimeout(setStatus,0);}
+  };
+}
+
+/* ================= role routing ================= */
+const ROLE='s';
+function store(k,v){try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v);}catch(e){}}
+function recall(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+function switchRole(){store('bkw2-role',null);location.reload();}
+let started=false;
+function start(role){
+  if(started)return;started=true;
+  document.getElementById('wrap').hidden=false;
+  document.body.classList.add('role-'+role);
+  const local=role==='p';
+  if(role==='s'||role==='p'){document.getElementById('scol').hidden=false;Story(makeBus('s',local),role);}
+  if(role==='q'||role==='p'){document.getElementById('qcol').hidden=false;Questions(makeBus('q',local),local);}
+  if(role==='p')document.getElementById('switchS').hidden=true;
+}
+start(ROLE);
+
+/* ================= question screen ================= */
+function Questions(bus,preview){
+  const el=document.getElementById('qview'),wrapEl=document.getElementById('qwrap');
+  const FRAMES=['Seven moons','The serpent rises','Swallowed','Pots and gongs'];
+  const OPTSETS={
+    mid:[['#C2185B','#FFF3E8'],['#E8731F','#1E1208'],['#1F8C82','#F2FFFC'],['#6B3FA0','#F7F0FF'],['#E3A51C','#1E1406']],
+    warm:[['#D6286E','#FFF3E8'],['#F07828','#1E1208'],['#F8BE28','#1E1406'],['#C82E34','#FFF1EC'],['#F48CAA','#2A0E18']],
+    cool:[['#18968C','#F2FFFC'],['#7846B4','#F7F0FF'],['#2F6FD0','#F2F6FF'],['#4E9A3A','#F4FFF0'],['#2AB6C8','#062228']]
+  };
+  const BG={none:'#232323',night:'#1B1446',dusk:'#5A1A4A',day:'#227AAA',grey:'#34353E'};
+  const MUTED={none:'#A19D95',night:'#BDB5DE',dusk:'#EBC2D6',day:'#DDF1FA',grey:'#C3C4CC'};
+  const TOD={deep:'night',orange:'dusk',grey:'grey',pale:'day'};
+  const WARM={full:'warm',sliver:'mid',hazy:'cool',none:'cool'};
+  const MOT_OF={still:'reveal',drift:'drift',tide:'scatter',orbit:'burst'};
+  const MOTION={
+    reveal:{tf:()=>'translateY(16px)',d:'.5s',e:'ease',st:90},
+    burst:{tf:()=>'scale(.88)',d:'.65s',e:'cubic-bezier(.3,1.7,.5,1)',st:30},
+    drift:{tf:()=>'translate(-28px,18px)',d:'1.4s',e:'ease',st:180},
+    scatter:{tf:(h1,h2,h3)=>'translate('+Math.round((h1-.5)*90)+'px,'+Math.round((h2-.5)*44)+'px) rotate('+Math.round((h3-.5)*14)+'deg)',d:'1s',e:'cubic-bezier(.2,.8,.3,1)',st:60}
+  };
+  const hsh=n=>{const x=Math.sin(n*127.1+311.7)*43758.5453;return x-Math.floor(x);};
+  const blank=()=>({air:null,moon:null,sky:null,stars:null,sound:null});
+  const qs={a:blank(),gong:0};
+  const chosen={};
+  let qi=0,phase='q',editing=false,stage=0,busy=false,th=null;
+  const esc=s=>{const d=document.createElement('div');d.textContent=s;return d.innerHTML;};
+  const pad=n=>String(n).padStart(2,'0');
+  const publish=()=>bus.publish({a:qs.a,gong:qs.gong});
+  const labelOf=(Q,v)=>{const o=Q.opts.find(o=>o[1]===v);return o?o[0]:'Not answered';};
+
+  function theme(){
+    const a=qs.a,tod=a.sky?TOD[a.sky]:'none',warm=a.moon?WARM[a.moon]:'mid',motion=MOT_OF[a.sound]||'reveal';
+    const text=tod==='none'?'#ECE9E3':'#FFFFFF',line=tod==='none'?'rgba(236,233,227,.5)':'rgba(255,255,255,.45)';
+    return{tod,warm,motion,text,line,muted:MUTED[tod],bg:BG[tod],set:OPTSETS[warm]};
+  }
+  function applyTheme(T){
+    const s=wrapEl.style;s.setProperty('--qbg',T.bg);s.setProperty('--qtext',T.text);s.setProperty('--qmuted',T.muted);s.setProperty('--qline',T.line);
+    wrapEl.dataset.tod=T.tod;wrapEl.dataset.warm=T.warm;wrapEl.dataset.dens=qs.a.stars==null?'0':String(qs.a.stars);
+    if(!preview)document.body.style.background=T.bg;
+  }
+  bus.on(s=>{const n=typeof s.stage==='number'?s.stage:0;const was=stage===4,now=n===4;stage=n;if(was!==now)renderGong();});
+
+  function top(T){
+    const segs=QS.map((Q,i)=>{
+      const c=chosen[Q.id],done=qs.a[Q.id]!=null&&(phase!=='q'||i<qi||editing),cur=phase==='q'&&i===qi;
+      const col=cur?T.text:done?T.set[(c+i)%5][0]:T.line;
+      return '<i style="background:'+col+';opacity:'+(done||cur?1:.5)+'"></i>';
+    }).join('');
+    const counter=phase==='q'?pad(qi+1)+' / '+pad(QS.length):'Playing';
+    return '<div class="q-top"><div class="q-segs" aria-hidden="true">'+segs+'</div><div class="q-counter">'+counter+'</div></div>';
+  }
+  function gongHTML(){
+    if(stage!==4)return '<div id="gongslot"></div>';
+    const T=theme(),c=chosen.sound!=null?T.set[(chosen.sound+4)%5]:T.set[0];
+    return '<div id="gongslot"><button class="q-cta" id="gong" style="--ac:'+c[0]+';--act:'+c[1]+'"><span>Bang the gong</span><span class="dia" aria-hidden="true"></span></button></div>';
+  }
+  function wireGong(){const g=el.querySelector('#gong');if(g)g.addEventListener('click',()=>{qs.gong++;publish();try{navigator.vibrate&&navigator.vibrate(25);}catch(e){}});}
+  function renderGong(){const slot=el.querySelector('#gongslot');if(!slot)return;slot.outerHTML=gongHTML();wireGong();}
+  function foot(left){return '<div class="q-foot"><div class="left">'+left+''+'</div></div>';}
+  function wireFoot(){
+    const sw=el.querySelector('#switchQ');if(sw)sw.addEventListener('click',switchRole);
+    const bk=el.querySelector('#back');if(bk)bk.addEventListener('click',back);
+    const ag=el.querySelector('#again');if(ag)ag.addEventListener('click',()=>{qs.a=blank();for(const k in chosen)delete chosen[k];qi=0;phase='q';editing=false;publish();render();});
+  }
+  function back(){
+    if(busy||phase!=='q')return;
+    if(editing){editing=false;phase='done';render();}
+    else if(qi>0){qi--;render();}
+  }
+  function pick(i){
+    if(busy||phase!=='q')return;
+    const Q=QS[qi];busy=true;
+    chosen[Q.id]=i;qs.a[Q.id]=Q.opts[i][1];publish();
+    const box=el.querySelector('.q-opts');
+    if(box){box.classList.add('picking');box.querySelectorAll('.q-opt').forEach((b,j)=>b.setAttribute('aria-pressed',String(j===i)));}
+    applyTheme(theme());
+    setTimeout(()=>{busy=false;if(editing||qi+1>=QS.length){editing=false;phase='done';}else qi++;render();},420);
+  }
+  function render(){
+    const T=theme();applyTheme(T);
+    const M=MOTION[T.motion];
+    el.classList.remove('entered');
+    el.style.setProperty('--htf',T.motion==='drift'?'translate(-20px,10px)':'translateY(10px)');
+    if(phase==='q'){
+      const Q=QS[qi];
+      el.innerHTML=top(T)+
+        '<p class="q-eyebrow">'+FRAMES[qi]+'</p>'+
+        '<h1 class="q-head">'+esc(Q.q)+'</h1>'+
+        '<div class="q-opts">'+Q.opts.map((o,i)=>{
+          const[sw,pt]=T.set[(i+qi)%5];
+          const tf=M.tf(hsh(i*3.1+qi),hsh(i*5.7+qi),hsh(i*9.3+qi));
+          return '<button class="q-opt" data-i="'+i+'" aria-pressed="'+(chosen[Q.id]===i)+'" style="--sw:'+sw+';--pt:'+pt+';--tf:'+tf+';--d:'+M.d+';--e:'+M.e+';--dl:'+(i*M.st)+'ms"><span class="fill" aria-hidden="true"></span><span class="num">'+pad(i+1)+'</span><span class="lbl">'+esc(o[0])+'</span><span class="dia" aria-hidden="true"></span></button>';
+        }).join('')+'</div>'+
+        foot((qi>0||editing)?'<button class="q-link" id="back">Back</button>':'');
+      el.querySelectorAll('.q-opt').forEach(b=>b.addEventListener('click',()=>pick(+b.dataset.i)));
+    }else{
+      el.innerHTML=top(T)+
+        '<h1 class="q-head">Watch the big screen.</h1>'+
+        gongHTML()+
+        '<div class="q-rows">'+QS.map((Q,i)=>'<div class="q-row"><span class="k">'+esc(Q.short)+'</span><span class="v">'+esc(labelOf(Q,qs.a[Q.id]))+'</span><button class="q-link" data-edit="'+i+'">Change</button></div>').join('')+'</div>'+
+        foot('<button class="q-link" id="again">Start over</button>');
+      el.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>{qi=+b.dataset.edit;phase='q';editing=true;render();}));
+    }
+    wireGong();wireFoot();
+    cancelAnimationFrame(th);
+    th=requestAnimationFrame(()=>{th=requestAnimationFrame(()=>el.classList.add('entered'));});
+  }
+  document.addEventListener('keydown',e=>{
+    if(phase!=='q')return;
+    const n=parseInt(e.key,10);
+    if(n>=1&&n<=QS[qi].opts.length)pick(n-1);
+    else if(e.key==='ArrowLeft')back();
+  });
+  publish();render();
+}
+
+/* ================= story screen ================= */
+function Story(bus,role){
+  const NS='http://www.w3.org/2000/svg';
+  const W=1028,H=670,CX=514,HORIZON=538;
+  const stageEl=document.getElementById('stage');
+  let svg=document.getElementById('scene');
+  const subEl=document.getElementById('sub');
+  const sctrl=document.getElementById('sctrl');
+  const soundBtn=document.getElementById('sound');
+  const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* the story, a few lines per stage; the last line of each stays up */
+  const STORY=[
+    ["In the Visayas and Bicol, they tell of a time when the night was never dark.",
+     "Long ago, when the world had only just been made, the sea was calm and the sky was full."],
+    [TEXT[0],
+     "Bathala, maker of all things, had hung them there to light the world at night.",
+     "Fishermen steered home by them, and children played late beneath them."],
+    ["Deep in the sea lived Bakunawa, a serpent with a mouth as wide as a lake.",
+     TEXT[1],
+     TEXT[2],
+     "Only one moon was left."],
+    ["When the clouds parted, the serpent had wrapped itself around it."],
+    [TEXT[3]],
+    [TEXT[4],
+     "Bakunawa sank back into the sea, but it never stopped wanting the moon.",
+     "When the moon darkens in an eclipse, it is said the serpent has risen again.",
+     "And people still go outside and make noise until the moon returns."]
+  ];
+  /* the first question, what they notice first out the window: it sets the ink the clouds
+     and moons are drawn in (and, on the question screen, the weave of the cloth) */
+  const AIR={moon:{ink:'crayon'},lights:{ink:'ember'},clouds:{ink:'brush'},dark:{ink:'thread'}};
+  let lastAir=null;
+  const st={line:'painted',k:1,colour:BKW.skyColour(null),stars:BKW.starCount(null),dense:false,motion:'drift',seed:11};
+
+  /* palette from the reference */
+  const BASE={
+    sky1:'#121443',sky2:'#262170',haze:'#5a3fa6',cloud:'#0e1038',
+    arc:'#b9a8ee',lit:'#efe3c8',dark:'#3a3672',crater:'#d9c9b8',star:'#fbecc8',
+    mount:'#1c2154',mountA:'#2a3270',mountB:'#33407e',mountC:'#232a63',mountD:'#2b3874',ridge:'#6d8fd0',
+    sea:'#1a1c4c',horizon:'#c9b4f0',serpent:'#3fb3a2',gold:'#f6c47c',
+    bands:['#ef7d5e','#f49a74','#d873b4','#7d55c6','#5b82db','#b28be3','#4a3fa0','#6fa8e8','#e08cc8','#3a3f8f','#9a6fd6'],
+    water:['#d97fc0','#ef8a64','#4f78d0','#9a78dc','#2d3378','#3e8fc0','#f2b27a']
+  };
+  const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+  const lerp=(a,b,k)=>a+(b-a)*k;
+  const tf=hex=>BKW.tf(st.colour,hex);
+  const C=key=>st.colour.set[key]||tf(BASE[key]);
+  const CS=(key,hex)=>st.colour.set[key]||tf(hex);
+  function look(col,opacity=1){
+    if(st.line==='painted')return{fill:col,stroke:'none',opacity};
+    if(st.line==='linework')return{fill:col,'fill-opacity':0.06,stroke:col,'stroke-width':1.5,'stroke-linejoin':'round',opacity:Math.min(1,opacity+0.1)};
+    return{fill:'none',stroke:col,'stroke-width':2.4,'stroke-linecap':'round','stroke-dasharray':'0.1 6.5',opacity:Math.min(1,opacity+0.1)};
+  }
+  function mulberry32(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+  let R=mulberry32(st.seed);
+  const j=(v,a)=>v+(R()*2-1)*a;
+  function el(name,attrs={},parent){const e=document.createElementNS(NS,name);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+  function smooth(pts){let d=`M${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}`;for(let i=0;i<pts.length-1;i++){const p0=pts[i-1]||pts[i],p1=pts[i],p2=pts[i+1],p3=pts[i+2]||p2;d+=`C${(p1[0]+(p2[0]-p0[0])/6).toFixed(1)},${(p1[1]+(p2[1]-p0[1])/6).toFixed(1)} ${(p2[0]-(p3[0]-p1[0])/6).toFixed(1)},${(p2[1]-(p3[1]-p1[1])/6).toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;}return d;}
+  const smoothCont=pts=>smooth(pts).replace(/^M/,'L');
+  const starPath=(x,y,s,w=0.16)=>`M${x},${y-s}L${x+s*w},${y-s*w}L${x+s},${y}L${x+s*w},${y+s*w}L${x},${y+s}L${x-s*w},${y+s*w}L${x-s},${y}L${x-s*w},${y-s*w}Z`;
+
+  /* fixed scene data */
+  const NB=12;
+  const BOUND=Array.from({length:NB},(_,i)=>({yC:418+i*5,yE:232+(i>0?50+(i-1)*27:0),A:46+(i%3)*7,f:4.1+i*0.04,ph:i*0.16,sp:0.35+(i%4)*0.06}));
+  const SLOTS=[0,-24,24,-40,40,-55,55,-66,66];
+  const RANK=[-1,6,7,4,5,2,3,0,1]; // order the serpent takes them: outer moons first, the centre one never
+  const PHASE_TABLE=[[0,63,1],[24,36,0.72],[40,30,0.5],[55,24,0.3],[66,10,0.12],[82,3,0]];
+  function slotProps(theta){const a=Math.abs(theta);for(let i=0;i<PHASE_TABLE.length-1;i++){const[a0,r0,k0]=PHASE_TABLE[i],[a1,r1,k1]=PHASE_TABLE[i+1];if(a<=a1){const t=(a-a0)/(a1-a0);return{r:r0+(r1-r0)*t,k:k0+(k1-k0)*t};}}return{r:3,k:0};}
+  /* the scene's view box, chosen per window shape. It always keeps the key area in view
+     (from just above the top moon down to the sea under the words). Wide windows see more
+     at the sides, which the drawing extends into, rather than losing the top and bottom. */
+  const VIEW={x0:60,x1:968,y0:22,y1:632,left:-250,right:1278,top:-30,bottom:670};
+  function sceneView(w,h){
+    if(!w||!h)return{x:0,y:-30,w:1028,h:700};
+    const A=w/h;let vw=1028,vh=vw/A;
+    if(vh<VIEW.y1-VIEW.y0){vh=VIEW.y1-VIEW.y0;vw=vh*A;const most=VIEW.right-VIEW.left;if(vw>most){vw=most;vh=vw/A;}}
+    else if(vh>VIEW.bottom-VIEW.top){vh=VIEW.bottom-VIEW.top;vw=vh*A;}
+    let y=(VIEW.y0+VIEW.y1)/2-vh/2;
+    y=Math.min(Math.max(y,VIEW.top),Math.max(VIEW.top,VIEW.bottom-vh));
+    return{x:CX-vw/2,y,w:vw,h:vh};
+  }
+  // arc centre and height: the top moon sits at y 128, clear of the frame; a shallower arc
+  // (330 tall against 400 wide) keeps the row of moons closer to level
+  const ARC_Y=458,ARC_RY=330;
+  const arcPos=(theta,rx=400,ry=ARC_RY)=>{const t=theta*Math.PI/180;return[CX+rx*Math.sin(t),ARC_Y-ry*Math.cos(t)];};
+
+  /* textures */
+  let textureURLs=null;
+  function makeTextures(){
+    const tr=mulberry32(st.seed*7+3);
+    const mk=(w,h,fn)=>{const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');const d=x.createImageData(w,h);for(let i=0;i<d.data.length;i+=4)fn(d.data,i);x.putImageData(d,0,0);return c.toDataURL();};
+    textureURLs={
+      mottleA:mk(90,58,(d,i)=>{const v=90+tr()*80;d[i]=v;d[i+1]=v*0.95;d[i+2]=v*0.9;d[i+3]=255;}),
+      mottleB:mk(360,234,(d,i)=>{const v=90+tr()*80;d[i]=v;d[i+1]=v*0.95;d[i+2]=v*0.9;d[i+3]=255;}),
+      grain:mk(220,220,(d,i)=>{const v=tr()*255;d[i]=d[i+1]=d[i+2]=v;d[i+3]=255;})
+    };
+  }
+
+  /* story state */
+  let back=0,stage=0,nextClang=0,lastKey='',linked=false;
+  const vis={sky:0.35,arc:0,sea:0,serp:0,waves:0,mount:0};
+  let serpLen=0,swallow=0,ecl=0,kNow=1;
+  let t=0,mt=0,gongEnv=0,rings=[];
+
+  /* build */
+  let HAND=null;
+  let G={},waveEls=[],streakEls=[],rowEls=[],twinkles=[],B='',buildN=0;
+  function build(fade){
+    if(fade&&svg.childNodes.length&&!RM){
+      const ghost=svg.cloneNode(true);ghost.removeAttribute('id');ghost.classList.add('ghost');ghost.setAttribute('aria-hidden','true');
+      svg.parentNode.insertBefore(ghost,svg.nextSibling);
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{ghost.style.opacity='0';}));
+      setTimeout(()=>ghost.remove(),1600);
+    }
+    B='b'+(++buildN);
+    R=mulberry32(st.seed);
+    svg.innerHTML='';
+    waveEls=[];streakEls=[];rowEls=[];twinkles=[];
+    const defs=el('defs',{},svg);
+    const sky=el('linearGradient',{id:'gSky'+B,x1:0,y1:0,x2:0,y2:1},defs);
+    el('stop',{offset:0,'stop-color':C('sky1')},sky);el('stop',{offset:st.colour.skyMid,'stop-color':C('sky2')},sky);if(st.colour.set.sky3)el('stop',{offset:0.82,'stop-color':st.colour.set.sky3},sky);
+    [-1,1].forEach(side=>[0,1,2].forEach(i=>{
+      const g=el('linearGradient',{id:`gB${i}${side>0?'r':'l'}${B}`,gradientUnits:'userSpaceOnUse',x1:CX,y1:0,x2:side>0?W:0,y2:0},defs);
+      el('stop',{offset:0.05,'stop-color':i===2?tf('#f2b6d6'):C('gold')},g);
+      el('stop',{offset:0.5,'stop-color':tf(BASE.bands[i])},g);
+    }));
+    const glow=el('radialGradient',{id:'gGlow'+B},defs);
+    el('stop',{offset:0,'stop-color':C('star'),'stop-opacity':0.5},glow);el('stop',{offset:1,'stop-color':C('star'),'stop-opacity':0},glow);
+    const vig=el('radialGradient',{id:'gVig'+B,cx:0.5,cy:0.45,r:0.75},defs);
+    el('stop',{offset:0.55,'stop-color':'#07061a','stop-opacity':0},vig);el('stop',{offset:1,'stop-color':'#07061a','stop-opacity':0.5},vig);
+    const blur=el('filter',{id:'fBlur'+B,filterUnits:'userSpaceOnUse',x:-300,y:-300,width:1628,height:1270},defs);
+    el('feGaussianBlur',{stdDeviation:45},blur);
+    const brush=el('filter',{id:'fBrush'+B,x:'-5%',y:'-10%',width:'110%',height:'120%'},defs);
+    el('feTurbulence',{type:'fractalNoise',baseFrequency:'0.01 0.045',numOctaves:2,seed:st.seed%97,result:'n'},brush);
+    el('feDisplacementMap',{in:'SourceGraphic',in2:'n',scale:11,xChannelSelector:'R',yChannelSelector:'G'},brush);
+    const pat=el('pattern',{id:'pGrain'+B,width:220,height:220,patternUnits:'userSpaceOnUse'},defs);
+    el('image',{href:textureURLs.grain,width:220,height:220},pat);
+
+    // sky (always there)
+    el('rect',{x:-300,y:-100,width:W+600,height:H+200,fill:`url(#gSky${B})`},svg);
+    G.sky=el('g',{},svg);
+    const haze=el('g',{filter:`url(#fBlur${B})`},G.sky);
+    [[514,300,260,150,'haze',0.55],[150,230,190,70,'haze',0.6],[880,230,190,70,'haze',0.6],[120,40,240,60,'cloud',0.8],[900,50,260,60,'cloud',0.8],[40,150,120,80,'cloud',0.7],[1000,160,120,80,'cloud',0.7]]
+      .forEach(([x,y,rx,ry,k,o])=>el('ellipse',{cx:x,cy:y,rx,ry,fill:C(k),opacity:o},haze));
+    for(let i=0;i<st.stars;i++){
+      const x=R()*W,y=-30+R()*450,r=0.6+R()*(st.dense?1.8:1.4);
+      const s=el('circle',{cx:x,cy:y,r,fill:C('star'),opacity:0.6},G.sky);
+      twinkles.push({el:s,base:0.25+R()*0.6,ph:R()*6.28,sp:0.6+R()*1.6});
+    }
+    // a few more stars past the left and right edges, which wide windows show
+    const Rx=mulberry32(st.seed+77),sideN=Math.round(st.stars*0.25);
+    for(let i=0;i<sideN;i++){
+      const x=Rx()<0.5?-260+Rx()*260:W+Rx()*260,y=-30+Rx()*450,r=0.6+Rx()*(st.dense?1.8:1.4);
+      const s=el('circle',{cx:x,cy:y,r,fill:C('star'),opacity:0.6},G.sky);
+      twinkles.push({el:s,base:0.25+Rx()*0.6,ph:Rx()*6.28,sp:0.6+Rx()*1.6});
+    }
+    const sparks=st.dense?[[355,238,6],[672,236,6],[140,268,4],[880,262,4],[260,120,5],[780,110,5],[60,60,4],[960,70,4]]:st.stars>20?[[355,238,6],[672,236,6],[140,268,4],[880,262,4]]:[[355,238,5]];
+    G.spark=el('g',{},G.sky);
+    sparks.forEach(([x,y,s])=>el('path',{d:starPath(x,y,s,0.22),fill:C('star'),opacity:0.85},G.spark));
+
+    G.arc=el('g',{},svg);
+    G.serp=el('g',{},svg);
+    G.moons=el('g',{},svg);
+
+
+    G.waves=el('g',st.line==='painted'?{filter:`url(#fBrush${B})`}:{},svg);
+    for(let i=0;i<NB-1;i++){
+      [-1,1].forEach(side=>{
+        const fill=i<3?`url(#gB${i}${side>0?'r':'l'}${B})`:tf(BASE.bands[i]);
+        const p=el('path',look(fill,0.9),G.waves);
+        if(st.line!=='painted'&&i<3)p.setAttribute('stroke',tf(BASE.bands[i]));
+        waveEls.push({el:p,i,side});
+        if(st.line==='painted'){const s=el('path',{fill:'none',stroke:'#fff3e0','stroke-width':1.6,opacity:0.16},G.waves);streakEls.push({el:s,i,side});}
+      });
+    }
+
+    G.mount=el('g',{},svg);
+    const poly=(pts,key,o=1)=>el('polygon',Object.assign({points:pts.map(p=>p.join(',')).join(' ')},look(C(key),o)),G.mount);
+    poly([[-280,524],[0,522],[90,508],[170,516],[260,538],[-280,538]],'mountC',0.95);
+    poly([[1308,522],[1028,520],[940,506],[860,514],[770,538],[1308,538]],'mountC',0.95);
+    poly([[190,538],[300,505],[380,490],[430,465],[490,438],[520,452],[560,443],[620,470],[700,500],[800,520],[860,538]],'mount');
+    poly([[490,438],[455,505],[520,452]],'mountA');
+    poly([[560,443],[540,500],[620,470]],'mountB');
+    poly([[520,452],[540,500],[470,522],[455,505]],'mountC');
+    poly([[620,470],[700,500],[600,526],[540,500]],'mountD');
+    poly([[300,505],[380,490],[350,530]],'mountA');
+    el('path',{d:'M490,438L455,505L400,532M560,443L540,500L562,536M380,490L350,530',fill:'none',stroke:C('ridge'),'stroke-width':1.2,opacity:0.55,'stroke-dasharray':st.line==='dotted'?'0.1 6':'none','stroke-linecap':'round'},G.mount);
+
+    G.sea=el('g',{},svg);
+    el('rect',{x:-300,y:HORIZON,width:W+600,height:H-HORIZON+100,fill:C('sea')},G.sea);
+    el('rect',{x:-300,y:HORIZON-1,width:W+600,height:2.5,fill:C('horizon'),opacity:0.6},G.sea);
+    for(let y=HORIZON+5,row=0;y<H+30;row++){
+      const h=3+R()*6,g=el('g',{},G.sea);
+      const depth=clamp((y-HORIZON)/(H-HORIZON));
+      let x=-280+R()*40;
+      while(x<W+280){
+        const w=24+R()*190*(0.6+depth);
+        const near=Math.abs(x+w/2-CX)<90;
+        const pool=near?[1,6,0,3]:BASE.water.map((_,k)=>k);
+        const col=tf(BASE.water[pool[Math.floor(R()*pool.length)]]);
+        if(R()>0.25)el('rect',Object.assign({x:x.toFixed(1),y:y.toFixed(1),width:w.toFixed(1),height:h.toFixed(1),rx:h/2},look(col,0.55+(1-depth)*0.4)),g);
+        x+=w+4+R()*30;
+      }
+      rowEls.push({el:g,row,y});
+      y+=h+1+R()*3;
+    }
+    el('line',{x1:CX,y1:HORIZON+4,x2:CX,y2:640,stroke:C('star'),'stroke-width':1,opacity:0.3},G.sea);
+
+    G.fx=el('g',{},svg);
+    if(HAND)HAND.repaint();
+    // the quiet water under the words takes on the sky
+    const sc=parseInt(tf('#0c0b2c').slice(1),16);
+    stageEl.style.setProperty('--scrim',[sc>>16&255,sc>>8&255,sc&255].join(','));
+    draw();
+  }
+
+  /* paper textures: built once into their own layer above the hand-drawn canvas,
+     so the clouds and moons get the same facets, mottle and grain as the scene.
+     The whole layer blends as overlay (the CSS on #tex); the vignette is the .vig div. */
+  function buildTex(){
+    const tex=document.getElementById('tex'),R2=mulberry32(st.seed*5+1),j2=(v,a)=>v+(R2()*2-1)*a;
+    tex.innerHTML='';
+    const defs=el('defs',{},tex);
+    const pat=el('pattern',{id:'pGrainT',width:220,height:220,patternUnits:'userSpaceOnUse'},defs);
+    el('image',{href:textureURLs.grain,width:220,height:220},pat);
+    const facets=el('g',{opacity:0.9},tex);
+    const step=56,pts=[];
+    for(let gy=-2;gy<=Math.ceil(H/step)+2;gy++){const r=[];for(let gx=-1;gx<=Math.ceil(W/step)+1;gx++)r.push([gx*step+j2(0,20),gy*step+j2(0,20)]);pts.push(r);}
+    for(let y=0;y<pts.length-1;y++)for(let x=0;x<pts[y].length-1;x++){
+      const a=pts[y][x],b=pts[y][x+1],c=pts[y+1][x],d=pts[y+1][x+1];
+      [[a,b,d],[a,d,c]].forEach(tri=>{const light=R2()>0.5;el('polygon',{points:tri.map(p=>p.map(v=>v.toFixed(1)).join(',')).join(' '),fill:light?'#ffecc8':'#0c0516','fill-opacity':(light?0.04+R2()*0.11:0.03+R2()*0.08).toFixed(3),stroke:'#f5cd96','stroke-opacity':0.04,'stroke-width':0.7},facets);});
+    }
+    el('image',{href:textureURLs.mottleA,x:0,y:-40,width:W,height:H+80,preserveAspectRatio:'none',opacity:0.28},tex);
+    el('image',{href:textureURLs.mottleB,x:0,y:-40,width:W,height:H+80,preserveAspectRatio:'none',opacity:0.2},tex);
+    el('rect',{x:-100,y:-100,width:W+200,height:H+200,fill:'url(#pGrainT)',opacity:0.16},tex);
+  }
+
+  /* per-frame pieces */
+  function boundaryY(i,u,side,tm){
+    const b=BOUND[i],tt=clamp((u-28)/560),ease=1-Math.pow(1-tt,2.4);
+    return b.yC+(b.yE-b.yC)*ease+b.A*(1+gongEnv*0.7)*Math.sin(tt*b.f+b.ph+side*0.6+tm*b.sp*(1+gongEnv*3))*Math.pow(tt,0.7);
+  }
+  function waves(tm){
+    const us=[];for(let u=26;u<=800;u+=14)us.push(u);
+    const line=(i,side)=>us.map(u=>[CX+side*u,boundaryY(i,u,side,tm)]);
+    waveEls.forEach(({el,i,side})=>{const top=line(i,side),bot=line(i+1,side).reverse();el.setAttribute('d',smooth(top)+smoothCont(bot)+'Z');});
+    streakEls.forEach(({el,i,side})=>el.setAttribute('d',smooth(line(i,side).map(([x,y])=>[x,y+5]))));
+  }
+  function moon(g,x,y,r,k,litSide,o,eclipse,idx){
+    if(o<0.01)return;
+    const lit=C('lit'),dark=C('dark');
+    const grp=el('g',{opacity:o.toFixed(2)},g);
+    if(idx===0&&r>30)el('circle',{cx:x,cy:y,r:r*1.9,fill:`url(#gGlow${B})`,opacity:(0.5*(1-eclipse)).toFixed(2)},grp);
+    el('circle',Object.assign({cx:x,cy:y,r},look(lit)),grp);
+    if(st.line==='painted'&&r>14){
+      const cr=mulberry32(Math.round(SLOTS[idx]*13+idx));
+      for(let n=0;n<5;n++){const a=cr()*6.28,d=cr()*r*0.6;el('circle',{cx:x+Math.cos(a)*d,cy:y+Math.sin(a)*d,r:r*(0.1+cr()*0.18),fill:C('crater'),opacity:0.35},grp);}
+    }
+    if(k<0.995){
+      const semi=litSide>0?0:1,term=k<0.5?semi:1-semi,rx=Math.max(0.01,r*Math.abs(1-2*k));
+      const d=`M${x},${y-r}A${r},${r} 0 0 ${semi} ${x},${y+r}A${rx},${r} 0 0 ${term} ${x},${y-r}Z`;
+      if(st.line==='painted')el('path',{d,fill:dark,opacity:0.92},grp);
+      else el('path',Object.assign({d},look(lit),{fill:dark,'fill-opacity':0.5}),grp);
+    }
+    if(eclipse>0.01){
+      // the serpent's shadow slides across the moon
+      const id='cm'+idx+B,cp=el('clipPath',{id},grp);
+      el('circle',{cx:x,cy:y,r:r+0.5},cp);
+      el('circle',{cx:x+(1-eclipse)*r*2.1,cy:y-r*0.12,r:r*1.04,fill:C('sky1'),opacity:0.94,'clip-path':`url(#${id})`},grp);
+    }
+  }
+  function drawSky(tm){
+    G.arc.innerHTML='';G.serp.innerHTML='';G.moons.innerHTML='';
+    // faint arc the moons travel
+    // no serpent is drawn: it is told in the words, and seen in the moons it takes
+    if(HAND)return; // the hand-drawn layer draws the moons
+    const shift=st.motion==='orbit'?tm*5:0;
+    SLOTS.forEach((base,i)=>{
+      let th=base;
+      if(shift)th=((base+shift+82)%164+164)%164-82;
+      let{r,k}=slotProps(th),[x,y]=arcPos(th);
+      let o=clamp((82-Math.abs(th))/12);
+      if(i===0){
+        // the visitor's moon: starts alone and large, settles onto the arc
+        x=lerp(CX,x,vis.arc);y=lerp(300,y,vis.arc);r=lerp(92,r,vis.arc);k=kNow;
+        moon(G.moons,x,y,r,k,th<0?1:-1,o,ecl,0);
+      }else{
+        const gone=clamp(swallow-RANK[i]);
+        o*=vis.arc*(1-0.94*gone);
+        moon(G.moons,x,y,r,k,th<0?1:-1,o,0,i);
+      }
+    });
+  }
+  function drawFx(){
+    G.fx.innerHTML='';
+    rings=rings.filter(r0=>t-r0<2.4);
+    for(const r0 of rings){const age=t-r0;el('path',{d:`M${CX-age*560},${HORIZON}A${age*560},${age*500} 0 0 1 ${CX+age*560},${HORIZON}`,fill:'none',stroke:C('gold'),'stroke-width':2.5,opacity:((1-age/2.4)*0.55).toFixed(3)},G.fx);}
+  }
+  function draw(){
+    const m=st.motion;
+    G.sky.setAttribute('opacity',vis.sky.toFixed(3));
+    G.arc.setAttribute('opacity',vis.arc.toFixed(3));
+    G.serp.setAttribute('opacity',vis.serp.toFixed(3));
+    G.sea.setAttribute('opacity',vis.sea.toFixed(3));
+    G.waves.setAttribute('opacity',vis.waves.toFixed(3));
+    G.mount.setAttribute('opacity',vis.mount.toFixed(3));
+    if(vis.waves>0.005)waves(m==='drift'||m==='orbit'?mt:mt*0.25);
+    drawSky(mt);
+    drawFx();
+    rowEls.forEach(({el,row,y})=>el.setAttribute('transform',m==='tide'?`translate(${(Math.sin(mt*0.7+y*0.09)*(5+row*0.35)).toFixed(1)},0)`:''));
+    const tw=m!=='still';
+    twinkles.forEach(s=>s.el.setAttribute('opacity',(tw?s.base*(0.55+0.45*Math.sin(mt*s.sp+s.ph)):s.base).toFixed(2)));
+  }
+
+  /* stages */
+  function targets(){
+    return{
+      // with the hand-drawn layer, its ocean (iconAsset 13) takes the place of the generated
+      // sea, its rows of ripples, the waves and the mountains
+      sky:stage>=1?1:0.6,arc:stage>=1?1:0,sea:stage>=2&&!HAND?1:0,serp:stage>=2?1:0,
+      waves:stage>=4&&!HAND?1:0,mount:stage>=4&&!HAND?1:0
+    };
+  }
+  let subTimer=null;
+  function setSub(text){
+    clearTimeout(subTimer);
+    subEl.classList.add('out');
+    subTimer=setTimeout(()=>{subEl.textContent=text;if(text)subEl.classList.remove('out');},RM?0:700);
+  }
+  /* play a stage's lines one after another; the last one stays up. Each line is given
+     enough time to read; onDone runs once the last line has had its turn. */
+  let seqT=[],linesDone=true,ended=false,lastMoon=null;
+  const lineMs=l=>RM?3500:Math.max(4200,1600+62*l.length);
+  function playLines(lines,onDone){
+    seqT.forEach(clearTimeout);seqT=[];linesDone=false;
+    let at=0;
+    lines.forEach(l=>{seqT.push(setTimeout(()=>setSub(l),at));at+=lineMs(l);});
+    seqT.push(setTimeout(()=>{linesDone=true;if(onDone)onDone();},at));
+  }
+  function stopLines(){seqT.forEach(clearTimeout);seqT=[];linesDone=true;}
+  function linesFor(n){
+    return STORY[n];
+  }
+  function pub(){bus.publish({stage,back,ended});}
+  function setStage(n){
+    if(n===stage)return;
+    stage=n;
+    if(n===4)nextClang=t+1;
+    if(ended&&n<5){ended=false;}
+    if(n===0&&stageEl.classList.contains('intro')){stopLines();setSub('');}
+    // after the epilogue, tell the question screen the visit is over
+    else playLines(linesFor(n),n===5?()=>{ended=true;pub();}:tryHandback);
+    pub();
+  }
+  /* "hand back" to the question screen (unlocking the next question) only once this
+     stage's lines have played and its scene has got there, so the story always gets told before the next answer */
+  let handbackDue=false;
+  function tryHandback(){
+    if(!handbackDue||!linesDone||(HAND&&!HAND.settled(stage)))return;
+    handbackDue=false;
+    SI.shoot('down');
+    cyc.push(setTimeout(()=>{back=shown;pub();},800));
+    cyc.push(setTimeout(()=>SI.clear(),1000));
+  }
+
+  /* audio */
+  let actx=null,soundOn=true;
+  function ensureAudio(){
+    if(!actx){const AC=window.AudioContext||window.webkitAudioContext;if(AC)actx=new AC();}
+    if(actx&&actx.state==='suspended')actx.resume().then(updateSoundBtn,()=>{});
+    updateSoundBtn();
+  }
+  const audioOn=()=>actx&&actx.state==='running'&&soundOn;
+  function updateSoundBtn(){soundBtn.textContent=audioOn()?'Mute':'Turn on sound';}
+  function clang(){
+    if(!audioOn())return;
+    const n=actx.currentTime,out=actx.createGain();out.gain.value=0.22;out.connect(actx.destination);
+    const base=150+Math.random()*30;
+    [1,2.76,5.4,8.93].forEach((r,i)=>{const o=actx.createOscillator();o.type='sine';o.frequency.value=base*r;const gn=actx.createGain();gn.gain.setValueAtTime(0.0001,n);gn.gain.exponentialRampToValueAtTime(0.6/(i+1),n+0.01);gn.gain.exponentialRampToValueAtTime(0.0001,n+2.4/(i*0.6+1));o.connect(gn).connect(out);o.start(n);o.stop(n+2.6);});
+    const len=Math.floor(actx.sampleRate*0.25),buf=actx.createBuffer(1,len,actx.sampleRate),data=buf.getChannelData(0);
+    for(let i=0;i<len;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/len,3);
+    const src=actx.createBufferSource();src.buffer=buf;const bp=actx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=1800;bp.Q.value=0.8;const ng=actx.createGain();ng.gain.value=0.5;
+    src.connect(bp).connect(ng).connect(out);src.start(n);
+  }
+  function gong(){
+    gongEnv=1;rings.push(t);clang();
+  }
+
+  /* incoming answers */
+  bus.onStatus(ok=>{linked=ok;});
+  /* a new answer: glow rises in from below, the scene renders inside it, then the glow shoots up */
+  const SI=makeSiri(stageEl);
+  let shown=0,pendingS=null,arriveT=null,cyc=[];
+  function chime(){
+    if(!audioOn())return;
+    const n=actx.currentTime,o=actx.createOscillator(),g=actx.createGain();o.type='sine';
+    o.frequency.setValueAtTime(520,n);o.frequency.exponentialRampToValueAtTime(1040,n+0.5);
+    g.gain.setValueAtTime(0.0001,n);g.gain.exponentialRampToValueAtTime(0.1,n+0.08);g.gain.exponentialRampToValueAtTime(0.0001,n+1.2);
+    o.connect(g).connect(actx.destination);o.start(n);o.stop(n+1.3);
+  }
+  function cycle(){
+    cyc.forEach(clearTimeout);cyc=[];
+    SI.show('below');stageEl.classList.add('siri-on');chime();
+    arriveT=true;
+    cyc.push(setTimeout(()=>{arriveT=null;const p=pendingS;pendingS=null;applyAnswers(p);},700));
+    /* scene has rendered: hand it back down to the question screen */
+    cyc.push(setTimeout(()=>{SI.fade();stageEl.classList.remove('siri-on');handbackDue=true;tryHandback();},2500));
+  }
+  bus.on(s=>{
+    const a=sanitizeA(s.a);
+    let n=0;for(const Q of QS){if(a[Q.id]==null)break;n++;}
+    setIntro(n===0);
+    if(n>shown&&!RM){shown=n;pendingS=s;cycle();return;}
+    if(n<shown){shown=n;cyc.forEach(clearTimeout);cyc=[];arriveT=null;pendingS=null;handbackDue=false;SI.clear();stageEl.classList.remove('siri-on');back=Math.min(back,n);pub();}
+    else shown=n;
+    if(arriveT){pendingS=s;return;}
+    applyAnswers(s);
+  });
+  const lookKey=(a,M)=>M.line+'|'+JSON.stringify(a.sky)+'|'+JSON.stringify(a.stars);
+  function applyAnswers(s){
+    const a=sanitizeA(s.a);
+    let n=0;for(const Q of QS){if(a[Q.id]==null)break;n++;}
+    const M=BKW.moonLook(a.moon);
+    lastMoon=a.moon;
+    // the air answer: new ink now; its line plays while the clouds still cover the moon
+    const airChanged=a.air!==lastAir;
+    lastAir=a.air;
+    if(airChanged&&HAND)HAND.repaint();
+    const m=Math.max(0,n-1); // story stage: the air question comes before the moons
+    st.k=M.k;
+    st.motion=RM?'still':BKW.motionOf(a.sound);
+    const key=lookKey(a,M);
+    if(key!==lastKey){
+      const first=lastKey==='';
+      lastKey=key;st.line=M.line;st.colour=BKW.skyColour(a.sky);st.stars=Math.round(BKW.starCount(a.stars));st.dense=st.stars>=100;
+      build(!first);
+    }
+    setStage(m);
+    if(airChanged&&a.air&&stage===0&&!stageEl.classList.contains('intro'))
+      playLines(STORY[0],tryHandback);
+  }
+
+  /* loop */
+  let last=performance.now(),prevDraw=0;
+  function loop(now){
+    requestAnimationFrame(loop);
+    const dt=Math.min(0.06,(now-last)/1000);last=now;t+=dt;
+    if(st.motion!=='still')mt+=dt;
+    const T=targets(),rate=RM?1:dt*0.9;
+    for(const k in vis)vis[k]+=(T[k]-vis[k])*Math.min(1,rate);
+    const sl=stage>=2?1:0;
+    serpLen+=(sl-serpLen)*Math.min(1,RM?1:dt*0.5);
+    const swT=(stage>=2&&stage<5)?8:0;
+    swallow+=clamp(swT-swallow,-dt*2.4,dt*0.9);if(RM)swallow=swT;
+    const eT=(stage>=2&&stage<5)?0.82:0;
+    ecl+=(eT-ecl)*Math.min(1,RM?1:dt*(eT>ecl?0.5:1.4));
+    const kT=stage>=5?1:st.k;
+    kNow+=(kT-kNow)*Math.min(1,RM?1:dt*0.8);
+    gongEnv*=Math.exp(-dt*2.5);
+    /* gongs keep ringing out while the sounds fill the screen */
+    if(stage===4&&t>=nextClang){nextClang=t+1.3+Math.random()*1.2;gong();}
+    tryHandback();
+    if(now-prevDraw<33)return;
+    prevDraw=now;draw();applyView();
+  }
+
+  /* controls */
+  soundBtn.addEventListener('click',()=>{if(audioOn())soundOn=false;else{soundOn=true;ensureAudio();}updateSoundBtn();});
+  document.getElementById('fs').addEventListener('click',()=>{try{const r=stageEl.requestFullscreen&&stageEl.requestFullscreen();if(r&&r.catch)r.catch(()=>{});}catch(e){}});
+  stageEl.addEventListener('click',e=>{if(e.target.closest('button'))return;ensureAudio();});
+  let hideT=null;
+  function wake(){sctrl.classList.remove('hide');clearTimeout(hideT);if(role==='s')hideT=setTimeout(()=>sctrl.classList.add('hide'),3000);}
+  stageEl.addEventListener('pointermove',wake);wake();
+  if(role==='s'){
+    document.addEventListener('keydown',e=>{
+      ensureAudio();
+      if(e.key==='f'||e.key==='F'){try{stageEl.requestFullscreen&&stageEl.requestFullscreen();}catch(err){}}
+    });
+  }
+
+  /* hand-drawn clouds and moons (handdrawn.js); without it the SVG moons are used */
+  const winEl=document.getElementById('win');
+  /* the sky follows the hand-drawn layer as the view closes in on the moon at the end */
+  function applyView(){
+    let v=sceneView(winEl.clientWidth,winEl.clientHeight);
+    const c=HAND&&HAND.camera();
+    if(c)v={x:c.mx+(v.x-c.px)/c.z,y:c.my+(v.y-c.py)/c.z,w:v.w/c.z,h:v.h/c.z};
+    /* the little four-point stars would swell into big ones, so they go as it closes in */
+    if(G.spark)G.spark.setAttribute('opacity',c?clamp(1-(c.z-1)/.7).toFixed(3):1);
+    const box=[v.x,v.y,v.w,v.h].map(n=>n.toFixed(1)).join(' ');
+    if(box!==svg.getAttribute('viewBox'))svg.setAttribute('viewBox',box);
+  }
+  new ResizeObserver(applyView).observe(winEl);applyView();
+  HAND=typeof HandDrawn==='function'&&typeof ART==='object'&&typeof p5==='function'?HandDrawn(winEl,{
+    arcPos,view:sceneView,
+    get:()=>({stage,t,mt,motion:st.motion,rm:RM,swallow,ecl,k:kNow}),
+    colours:()=>({
+      line:st.line,ink:(AIR[lastAir]||{}).ink||'crayon',lit:C('lit'),dark:C('dark'),crater:C('crater'),sky1:C('sky1'),
+      moonLine:tf('#2c2862'),cloudLine:C('lit'),
+      cloudTop:CS('cloudTop','#3a3190'),cloudBottom:CS('cloudBottom','#221c62'),cloudGlow:CS('cloudGlow','#8d74e0'),
+      // the ocean: deep to light water, foam, and a gold line like the reference
+      sea1:CS('sea1','#1c2a78'),sea2:CS('sea2','#2f4fb8'),sea3:CS('sea3','#4b8ad8'),sea4:CS('sea4','#86c2ec'),seaFoam:CS('seaFoam','#d2ecf8'),seaLine:CS('seaLine','#e9c27c'),
+      // the serpent: a dark sea-green back and paler belly, the same under every sky (sky.js)
+      serpentBack:CS('serpentBack','#17505c'),serpentBelly:CS('serpentBelly','#3fb3a2')
+    })
+  }):null;
+  /* the opening night sky, painted like a photograph rather than drawn */
+  const realSky=stageEl.querySelector('canvas.realsky');
+  function paintRealSky(){
+    const W=stageEl.clientWidth,H=stageEl.clientHeight;if(!W||!H)return;
+    const dpr=Math.min(2,window.devicePixelRatio||1);
+    realSky.width=Math.round(W*dpr);realSky.height=Math.round(H*dpr);
+    const x=realSky.getContext('2d'),Rs=mulberry32(91),gs=()=>(Rs()+Rs()+Rs()-1.5)/1.5;
+    x.setTransform(dpr,0,0,dpr,0,0);
+    const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#020309');g.addColorStop(.65,'#050918');g.addColorStop(1,'#0e1528');
+    x.fillStyle=g;x.fillRect(0,0,W,H);
+    // the milky way, rising from lower left to upper right: soft glow, then dark dust lanes
+    const along=t=>[W*(-.1+1.2*t),H*(1.02-1.0*t)],nx=.64,ny=.77,bw=Math.min(W,H)*.16;
+    const blob=(px,py,r,col)=>{const rg=x.createRadialGradient(px,py,0,px,py,r);rg.addColorStop(0,col);rg.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=rg;x.fillRect(px-r,py-r,r*2,r*2);};
+    for(let i=0;i<70;i++){const t=Rs(),[px,py]=along(t),o=gs()*bw*.6;blob(px+nx*o,py+ny*o,bw*(.5+Rs()*.9),Rs()<.6?'rgba(150,165,215,.05)':'rgba(215,180,150,.04)');}
+    for(let i=0;i<26;i++){const t=Rs(),[px,py]=along(t),o=gs()*bw*.25;blob(px+nx*o,py+ny*o,bw*(.15+Rs()*.3),'rgba(2,3,9,.35)');}
+    // stars: most faint, a few bright; crowded along the band
+    const cols=['255,255,255','207,220,255','255,242,220','255,217,176','188,208,255'];
+    const N=Math.round(W*H/240);
+    for(let i=0;i<N;i++){
+      let px,py;
+      if(Rs()<.45){const[bx,by]=along(Rs()),o=gs()*bw*1.1;px=bx+nx*o;py=by+ny*o;}else{px=Rs()*W;py=Rs()*H;}
+      const r=.25+Math.pow(Rs(),6)*1.4,a=.2+.8*Math.pow(Rs(),2.2);
+      x.fillStyle='rgba('+cols[Math.floor(Rs()*cols.length)]+','+a.toFixed(3)+')';
+      x.beginPath();x.arc(px,py,r,0,Math.PI*2);x.fill();
+    }
+    for(let i=0;i<34;i++){
+      const px=Rs()*W,py=Rs()*H*.92,c=cols[Math.floor(Rs()*cols.length)],r=6+Rs()*12;
+      blob(px,py,r,'rgba('+c+',.22)');
+      x.fillStyle='rgba('+c+',.95)';x.beginPath();x.arc(px,py,.9+Rs()*1.1,0,Math.PI*2);x.fill();
+    }
+  }
+  let skyT=null;
+  new ResizeObserver(()=>{clearTimeout(skyT);skyT=setTimeout(paintRealSky,150);}).observe(stageEl);
+  paintRealSky();
+  function setIntro(on){
+    const was=stageEl.classList.contains('intro');
+    stageEl.classList.toggle('intro',on);
+    // the opening lines start as the real sky dissolves; the real sky itself is wordless
+    if(on&&!was){stopLines();setSub('');}
+  }
+  makeTextures();buildTex();build(false);lastKey=lookKey(sanitizeA(),BKW.moonLook(null));pub();updateSoundBtn();
+  requestAnimationFrame(loop);
+}
+})();
+</script>
+</body>
+</html>

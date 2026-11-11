@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bakunawa at the window</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* The way in: pick which screen this device shows. Same frame, cloth and type as the question screen. */
+:root{
+  --s1:#020309; --s2:#050918; --s3:#0e1528;          /* the night in the window */
+  --f1:#ffc4d6; --f2:#ffe9ad;                        /* the drawn frame */
+  --qframe:#ffd7c2; --text:#f1e6d2; --muted:#c9bfb0;
+  --sans:"Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --m:clamp(6px,1.4vw,14px);                          /* frame inset from the edge */
+  --fy:clamp(46px,7vw,82px); --fx:clamp(54px,8.4vw,98px); /* frame line widths (9-slice) */
+  --win:clamp(26px,4.4vw,52px);                      /* where the window starts inside the frame */
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:#14122e;color:var(--text);font-family:var(--sans);font-weight:500;-webkit-font-smoothing:antialiased}
+.wrap{position:fixed;inset:0;overflow:hidden}
+/* the woven cloth: tone-on-tone stepped diamonds over the frame's sunset colours */
+.cloth{position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(45deg,rgba(255,255,255,.07) 0 6px,transparent 6px 18px),
+    repeating-linear-gradient(-45deg,rgba(0,0,0,.08) 0 6px,transparent 6px 18px),
+    linear-gradient(135deg,#3b7bd4 0%,#7b4fc9 22%,#d0508c 45%,#f08a54 65%,#f2c45a 82%,#49b39c 100%)}
+.win{position:absolute;inset:var(--win);overflow:hidden;background:linear-gradient(180deg,var(--s1),var(--s2) 65%,var(--s3) 92%)}
+.win canvas{position:absolute;inset:0;width:100%;height:100%}
+.frame{position:absolute;inset:var(--m);pointer-events:none;border-style:solid;border-width:0;
+  border-image-source:url(img/frame.svg?v=8);border-image-slice:82 98;border-image-width:var(--fy) var(--fx);border-image-repeat:stretch;
+  filter:drop-shadow(0 0 4px rgba(255,205,190,.25))}
+@supports (-webkit-mask-box-image:none){
+  .frame{border-image:none;background:linear-gradient(120deg,var(--f1),var(--f2));-webkit-mask-box-image:url(img/frame.svg?v=8) 82 98 / var(--fy) var(--fx) stretch}
+}
+main{position:absolute;inset:var(--win);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:calc(var(--fy) - var(--win) + 16px) calc(var(--fx) - var(--win) + 16px);text-align:center;overflow:auto}
+.eyebrow{margin:0 0 18px;font-size:11px;letter-spacing:.34em;text-indent:.34em;text-transform:uppercase;color:var(--muted)}
+h1{margin:0 0 14px;font-weight:500;font-size:clamp(28px,4.2vw,46px);line-height:1.18;letter-spacing:-.005em;text-wrap:balance}
+.lede{margin:0 0 clamp(26px,5vh,46px);max-width:34ch;font-size:clamp(15px,1.5vw,18px);line-height:1.5;color:var(--muted);text-wrap:pretty}
+.picks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(14px,2vw,22px);width:min(640px,100%)}
+@media (max-width:560px){.picks{grid-template-columns:1fr}}
+/* the answer boxes from the question screen: the hand-drawn box (btnframe.svg), 9-sliced */
+.pick{--by:11px;--bx:15px;position:relative;display:flex;flex-direction:column;gap:6px;padding:20px 22px 18px;text-align:left;
+  color:var(--text);text-decoration:none;border-radius:2px;transition:transform .3s ease}
+.pick::before{content:"";position:absolute;inset:0;pointer-events:none;border-style:solid;border-width:0;
+  border-image-source:url(img/btnframe.svg?v=1);border-image-slice:11 15;border-image-width:var(--by) var(--bx);border-image-repeat:stretch;
+  opacity:.75;transition:opacity .35s ease}
+@supports (-webkit-mask-box-image:none){
+  .pick::before{border-image:none;background:var(--qframe);-webkit-mask-box-image:url(img/btnframe.svg?v=1) 11 15 / var(--by) var(--bx) stretch}
+}
+.pick::after{content:"";position:absolute;inset:4px 6px;pointer-events:none;
+  background:radial-gradient(ellipse 60% 90% at 50% 50%,rgba(255,205,156,.18),transparent 80%);opacity:0;transition:opacity .35s ease}
+.pick:hover::before,.pick:focus-visible::before{opacity:1}
+.pick:hover::after,.pick:focus-visible::after{opacity:1}
+.pick:focus-visible{outline:none}
+.pick b{font-weight:500;font-size:clamp(17px,1.7vw,20px)}
+.pick span{font-weight:400;font-size:14px;line-height:1.45;color:var(--muted)}
+.pick i{font-style:normal;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--qframe);opacity:.8;margin-bottom:2px}
+.note{margin:clamp(22px,4vh,36px) 0 0;max-width:46ch;font-size:13px;line-height:1.5;color:var(--muted);opacity:.85}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="cloth" aria-hidden="true"></div>
+  <div class="win" aria-hidden="true"><canvas id="stars"></canvas></div>
+  <div class="frame" aria-hidden="true"></div>
+  <main>
+    <p class="eyebrow">Choose a screen</p>
+    <h1>Bakunawa at the window</h1>
+    <p class="lede">A myth from the Visayas and Bicol, told with tonight’s sky. Open one screen on each device.</p>
+    <nav class="picks" aria-label="Screens">
+      <a class="pick" href="question-screen.html">
+        <i>For the visitor</i>
+        <b>Question screen</b>
+        <span>Answer the questions about your own window and sky, on a phone or tablet.</span>
+      </a>
+      <a class="pick" href="story-screen.html">
+        <i>For the big screen</i>
+        <b>Story screen</b>
+        <span>Where the story plays out, drawn from the answers as they come in.</span>
+      </a>
+    </nav>
+    <p class="note">The two screens find each other on their own when they’re open in the same browser or on the same link.</p>
+  </main>
+</div>
+<script>
+/* a still field of stars in the window, like the question screen's */
+(function(){
+  const c=document.getElementById('stars'),x=c.getContext('2d');
+  let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  function draw(){
+    const d=Math.min(2,window.devicePixelRatio||1),w=c.clientWidth,h=c.clientHeight;
+    c.width=Math.round(w*d);c.height=Math.round(h*d);x.setTransform(d,0,0,d,0,0);seed=7;
+    const n=Math.round(w*h/2600);
+    for(let i=0;i<n;i++){
+      const X=rnd()*w,Y=rnd()*h*.95,r=rnd()<.06?1.4:.5+rnd()*.7,a=.25+rnd()*.6;
+      x.fillStyle=`rgba(241,230,210,${a.toFixed(2)})`;x.beginPath();x.arc(X,Y,r,0,Math.PI*2);x.fill();
+    }
+  }
+  new ResizeObserver(draw).observe(c);
+})();
+</script>
+</body></html>
