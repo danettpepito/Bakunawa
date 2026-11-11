@@ -2,8 +2,9 @@
    The hand-drawn frame (frame.svg) around the questions, laid over one big piece of woven cloth.
    - Lays out the window the questions sit in, from where the frame's inner line falls,
      and writes it to the stage as CSS variables (--wl --wt --wr --wb, --m, --fx --fy).
-   - Paints the cloth on a canvas behind the frame: one stepped diamond repeated in lines, tone on tone,
-     so it blends into the ground. The window covers it completely.
+   - Paints the cloth on a canvas behind the frame from the pattern drawings (img/patterns): the eight-point
+     star before the first answer, the stepped diamond after it, tone on tone, so it blends into the ground.
+     The window covers it completely.
    - The first answer leans the cloth towards a different thread; the new one sweeps in diagonally
      over the old, like a new weave being laid over it. A colour change cross-fades.
    StoryFrame(stage, {colours, pattern}) -> {repaint(how)}   how: leave out to cross-fade, or "none" to repaint in place while a slider moves
@@ -38,41 +39,34 @@ function StoryFrame(stage, api) {
   // each answer leans the cloth towards a different thread, very slightly
   const COLOURWAY = { stars: 'cream', binituen: 'gold', binakol: 'rose', okir: 'teal', ikat: 'ember' };
 
-  // one stepped diamond, the single motif of the whole cloth, one cell per character
-  const MOTIF = [
-    '....###....',
-    '...##.##...',
-    '..##...##..',
-    '.##.....##.',
-    '##...#...##',
-    '#...###...#',
-    '##...#...##',
-    '.##.....##.',
-    '..##...##..',
-    '...##.##...',
-    '....###....'
-  ];
-  // the runs of filled cells in each row of the motif, as [start, length]
-  const RUNS = MOTIF.map(row => [...row.matchAll(/#+/g)].map(m => [m.index, m[0].length]));
-  const THREADS = 3, PITCH = 16; // threads per cell, and cells from one diamond to the next along a row
+  // the pattern drawings: one repeating tile each (in the file's own units), woven in 12-unit cells
+  // of three threads. The star is the cloth before any answer; every answer brings in the diamond
+  const TILES = {
+    star: { src: 'img/patterns/eight-point-star-band.svg', size: 240 },
+    diamond: { src: 'img/patterns/stepped-diamond-band.svg', size: 192 }
+  };
+  const tileFor = pat => TILES[pat === 'stars' ? 'star' : 'diamond'];
+  const CELL = 12; // the drawings' cell, in their units
+  for (const t of Object.values(TILES)) {
+    t.img = new Image();
+    t.img.onload = () => { painted = ''; if (L) paint('none'); };
+    t.img.src = t.src;
+  }
 
-  // the same line of diamonds over and over, tone on tone, each line half a step along from the last.
-  // Every cell is laid in separate threads, so the weave still shows in the shape
-  function cloth(W, H, k, tint) {
-    const u = Math.max(4, Math.round(7 * k)), size = MOTIF.length, step = PITCH * u, rowH = step / 2, pick = u / THREADS;
-    const lines = Math.ceil(H / 2 / rowH) + 1, across = Math.ceil(W / 2 / step) + 1;
-    ctx.fillStyle = tint; ctx.globalAlpha = TONE;
-    for (let r = -lines; r <= lines; r++) {
-      const y0 = Math.round(H / 2 + r * rowH - size * u / 2), off = r & 1 ? rowH : 0;
-      for (let i = -across; i <= across; i++) {
-        const x0 = Math.round(W / 2 + i * step + off - size * u / 2);
-        RUNS.forEach((runs, cy) => {
-          for (let t = 0; t < THREADS; t++) {
-            for (const [cx, n] of runs) ctx.fillRect(x0 + cx * u, y0 + cy * u + t * pick, n * u, pick * .82);
-          }
-        });
-      }
-    }
+  // the tile, tinted in the thread's colour, repeated over the whole cloth from its centre
+  function cloth(W, H, k, tint, pat, dpr) {
+    const t = tileFor(pat);
+    if (!t.img.complete || !t.img.naturalWidth) return;
+    const u = Math.max(4, Math.round(7 * k)), size = t.size * u / CELL, px = Math.max(1, Math.round(size * dpr));
+    const tile = document.createElement('canvas');
+    tile.width = tile.height = px;
+    const x = tile.getContext('2d');
+    x.drawImage(t.img, 0, 0, t.size, t.size, 0, 0, px, px);
+    x.globalCompositeOperation = 'source-in'; x.fillStyle = tint; x.fillRect(0, 0, px, px);
+    const p = ctx.createPattern(tile, 'repeat');
+    p.setTransform(new DOMMatrix().translate(W / 2 - size / 2, H / 2 - size / 2).scale(size / px));
+    ctx.fillStyle = p; ctx.globalAlpha = TONE;
+    ctx.fillRect(0, 0, W, H);
     ctx.globalAlpha = 1;
   }
 
@@ -115,7 +109,7 @@ function StoryFrame(stage, api) {
     const { W, H, k } = L;
 
     ctx.fillStyle = c.base; ctx.fillRect(0, 0, W, H);
-    cloth(W, H, k, c.thread[COLOURWAY[pat]]);
+    cloth(W, H, k, c.thread[COLOURWAY[pat]], pat, dpr);
     ctx.fillStyle = '#000'; ctx.globalAlpha = SHADE; ctx.fillRect(0, 0, W, H);
     ctx.globalAlpha = 1;
   }
