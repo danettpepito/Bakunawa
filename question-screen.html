@@ -3,7 +3,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Bakunawa at the window · Question screen</title>
+<title>Bakunawa · Question screen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
@@ -895,8 +895,8 @@ function Questions(bus,preview){
     if(phase==='intro'){
       el.innerHTML=
         '<div class="welcome">'+
-        '<h1 class="q-head">Bakunawa at the window</h1>'+
-        '<p class="intro-lede">A myth from the Visayas and Bicol, told with tonight\u2019s sky.</p>'+
+        '<h1 class="q-head">Bakunawa</h1>'+
+        '<p class="intro-lede">Learn about the myth of Bakunawa,</p>'+
         '<button class="q-cta" id="begin"><span>Begin</span>'+sketch(43)+'</button></div>';
       el.querySelector('#begin').addEventListener('click',()=>{phase='q';qi=0;publish();render();});
     }else if(phase==='end'){
